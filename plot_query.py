@@ -28,8 +28,6 @@ def get_session():
 
 
 def plot_query(query, plot_type):
-
-
     session = get_session()
 
     df = pd.read_sql_query(query, session.bind)
@@ -37,6 +35,14 @@ def plot_query(query, plot_type):
         plot = (
             ggplot(df, aes(df.columns[0], df.columns[1]))
             + geom_point()
+            + theme_xkcd()
+            + theme(axis_text_x=element_text(rotation=90, hjust=1))
+        )
+    elif plot_type == 'line':
+        plot = (
+            ggplot(df, aes(df.columns[0], df.columns[1]))
+            + geom_point()
+            + geom_line()
             + theme_xkcd()
             + theme(axis_text_x=element_text(rotation=90, hjust=1))
         )
@@ -56,7 +62,7 @@ def get_args():
         '--sql_file', type=str, required=True,
     )
     parser.add_argument(
-        '--plot_type', type=str, default='scatter', choices=['hist', 'scatter']
+        '--plot_type', type=str, default='scatter', choices=['hist', 'scatter', 'line']
     )
     return parser.parse_args()
 
