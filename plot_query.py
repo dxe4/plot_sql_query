@@ -34,7 +34,12 @@ def plot_query(query, plot_type):
 
     df = pd.read_sql_query(query, session.bind)
     if plot_type == 'scatter':
-        plot = (ggplot(df, aes(df.columns[0], df.columns[1])) + geom_point() + theme_xkcd() + theme(axis_text_x=element_text(rotation=90, hjust=1)))
+        plot = (
+            ggplot(df, aes(df.columns[0], df.columns[1]))
+            + geom_point()
+            + theme_xkcd()
+            + theme(axis_text_x=element_text(rotation=90, hjust=1))
+        )
     elif plot_type == 'hist':
         plot = (
             ggplot(df)
@@ -43,7 +48,6 @@ def plot_query(query, plot_type):
         )
 
     plt.show(plot.draw())
-    # psql postgres://prix:prix@localhost:5432/prix --field-separator=, -qAt -f
 
 
 def get_args():
